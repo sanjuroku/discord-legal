@@ -1,47 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Service – Echo's Bot</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px 64px;
-      color: #1a1a1a;
-      background: #fafafa;
-      line-height: 1.7;
-    }
-    nav {
-      padding: 16px 0;
-      border-bottom: 1px solid #e0e0e0;
-      margin-bottom: 40px;
-      font-size: 0.9em;
-    }
-    nav a { color: #555; text-decoration: none; margin-right: 20px; }
-    nav a:hover { color: #1a1a1a; }
-    h1 { font-size: 1.8rem; margin-bottom: 0.2em; }
-    h2 { font-size: 1.1rem; margin-top: 2em; }
-    code {
-      background: #f0f0f0;
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-    footer { margin-top: 56px; font-size: 0.82em; color: #999; border-top: 1px solid #e0e0e0; padding-top: 16px; }
-    a { color: #0070f3; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms of Service – Echo's Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #12100e;
+  --ink2: #2d2820;
+  --paper: #fdf8f0;
+  --cream: #f5ede0;
+  --gold: #c8920a;
+  --gold-light: #f5d472;
+  --gold-pale: #faeec8;
+  --muted: #8c7a5e;
+  --border: rgba(180,140,60,0.22);
+  --border-strong: rgba(180,140,60,0.45);
+  --serif: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --sans: 'Noto Sans SC', 'DM Sans', 'Microsoft YaHei', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.75;
+  font-size: 15px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center;
+  padding: 0 2.5rem;
+  height: 54px;
+  background: rgba(253,248,240,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--ink2);
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+nav ul a {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+nav ul a:hover { color: var(--gold); text-decoration: none; }
+
+.page-header {
+  border-bottom: 1px solid var(--border);
+  padding: 3.5rem 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-header-bg {
+  position: absolute;
+  top: -0.1em; right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(5rem, 15vw, 12rem);
+  font-style: italic;
+  color: rgba(200,146,10,0.05);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.page-header-inner {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.page-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.page-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--ink2);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+.page-header .sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 560px;
+}
+
+.content-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem 5rem;
+  position: relative;
+}
+
+.content-wrap h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--ink2);
+  margin-top: 2.8rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.2;
+}
+.content-wrap h2:first-child { margin-top: 0; }
+
+.content-wrap p {
+  color: #3d3428;
+  margin-bottom: 0.75rem;
+  font-size: 0.93rem;
+}
+
+.content-wrap ul {
+  margin: 0.5rem 0 0.75rem 0;
+  padding-left: 1.4rem;
+  color: #3d3428;
+  font-size: 0.93rem;
+}
+.content-wrap ul li {
+  margin-bottom: 0.45rem;
+  line-height: 1.65;
+}
+
+code {
+  background: var(--ink2);
+  color: var(--gold-light);
+  padding: 0.1rem 0.42rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-family: 'Consolas', 'SF Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+strong { font-weight: 500; color: var(--ink2); }
+
+footer {
+  background: var(--ink2);
+  border-top: 1px solid var(--border);
+  padding: 1.6rem 2.5rem;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+footer a { color: rgba(255,255,255,0.45); }
+footer a:hover { color: var(--gold-light); }
+.footer-links { display: flex; gap: 1.5rem; }
+
+@media (max-width: 640px) {
+  nav { padding: 0 1.25rem; }
+  nav ul { gap: 1rem; }
+  .page-header { padding: 2.5rem 1.25rem 2rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 4rem; }
+  footer { padding: 1.5rem 1.25rem; }
+}
+</style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">← Echo's Bot</a>
-    <a href="privacy.html">Privacy Policy</a>
-  </nav>
 
-  <h1>Terms of Service</h1>
-  <p>These Terms of Service ("Terms") govern your use of Echo's Bot (also referred to as "咋办bot"), a Discord bot that provides features such as GPT-based chatting, game queries, tarot readings, and Reddit content fetching. By using this bot, you agree to comply with these Terms.</p>
+<nav>
+  <span class="nav-brand">✨ 咋办 Bot</span>
+  <ul>
+    <li><a href="index.html">← Home</a></li>
+    <li><a href="privacy.html">Privacy</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">Terms</div>
+  <div class="page-header-inner">
+    <div class="page-eyebrow">Legal</div>
+    <h1>Terms of Service</h1>
+    <p class="sub">These Terms govern your use of Echo's Bot (also referred to as "咋办bot"), a Discord bot providing GPT-based chatting, game queries, tarot readings, and Reddit content fetching. By using this bot, you agree to comply with these Terms.</p>
+  </div>
+</div>
+
+<div class="content-wrap">
 
   <h2>1. Eligibility</h2>
   <p>You must be at least 13 years of age to use Echo's Bot, in accordance with <a href="https://discord.com/terms">Discord's Terms of Service</a>. By using the bot, you confirm that you meet this requirement. You must also comply with Discord's Terms of Service at all times while using the bot.</p>
@@ -101,6 +271,15 @@
   <h2>11. Contact</h2>
   <p>If you have questions about these Terms, you may contact the developer via email: <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a>.</p>
 
-  <footer>Echo's Bot &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a></footer>
+</div>
+
+<footer>
+  <span>Echo's Bot · 咋办Bot</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+</footer>
+
 </body>
 </html>
