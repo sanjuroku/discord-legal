@@ -411,6 +411,131 @@ footer {
 @media (min-width: 721px) and (max-width: 960px) {
   .cards { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Mi-chan 扭蛋浮窗 ─────────────────────────────────────────────────────── */
+.gg-fab {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--gold); color: #fff8e8; font-size: 1.4rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; user-select: none; border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  transition: transform .15s, box-shadow .15s;
+}
+.gg-fab:hover { transform: scale(1.1); box-shadow: 0 6px 22px rgba(0,0,0,.3); }
+
+.gg-widget {
+  position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 9998;
+  width: 480px; max-height: 86vh; overflow-y: auto;
+  background: var(--paper); border: 1.5px solid var(--border-strong);
+  border-radius: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.2);
+  display: none;
+}
+.gg-widget.open { display: block; animation: gg-slidein .2s ease-out; }
+@keyframes gg-slidein {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (max-width: 520px) {
+  .gg-widget { width: calc(100vw - 2rem); right: 1rem; bottom: 5rem; }
+  .gg-w-center { grid-template-columns: 1fr; }
+}
+
+.gg-w-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border);
+  background: var(--cream); border-radius: 18px 18px 0 0;
+}
+.gg-w-title { font-weight: 700; font-size: 0.95rem; color: var(--ink2); flex: 1; }
+.gg-gold-count {
+  font-size: 0.82rem; font-weight: 700; color: var(--gold);
+  background: var(--gold-pale); border: 1px solid var(--border-strong);
+  padding: 0.25rem 0.85rem; border-radius: 20px; white-space: nowrap;
+}
+.gg-w-close {
+  background: none; border: none; cursor: pointer; font-size: 1rem;
+  color: var(--muted); padding: 0.15rem 0.5rem; border-radius: 4px;
+  transition: color .15s; line-height: 1;
+}
+.gg-w-close:hover { color: var(--ink); }
+
+.gg-w-body { padding: 1.1rem; }
+.gg-w-actions { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
+.gg-click-btn, .gg-upgrade-btn {
+  flex: 1; padding: 0.5rem 0.6rem;
+  border: 1.5px solid var(--border-strong); border-radius: 8px;
+  font-size: 0.84rem; font-weight: 600; color: var(--ink2);
+  cursor: pointer; font-family: var(--sans); user-select: none;
+  transition: background .15s, transform .1s;
+}
+.gg-click-btn  { background: var(--gold-pale); }
+.gg-upgrade-btn { background: var(--cream); }
+.gg-click-btn:hover   { background: var(--gold-light); transform: scale(1.04); }
+.gg-click-btn:active  { transform: scale(0.97); }
+.gg-upgrade-btn:hover:not(:disabled) { background: var(--gold-pale); transform: scale(1.04); }
+.gg-upgrade-btn:disabled { opacity: .38; cursor: default; transform: none; }
+
+.gg-w-center {
+  display: grid; grid-template-columns: 205px 1fr;
+  gap: 1rem; align-items: start;
+}
+.gg-img-panel {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1rem; min-height: 170px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+}
+#gg-img {
+  display: none; max-width: 118px; max-height: 118px;
+  object-fit: contain; border-radius: 8px;
+}
+@keyframes gg-fadein {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.gg-log {
+  font-size: 0.62rem; font-weight: 700; color: var(--gold);
+  text-align: center; white-space: nowrap; min-height: 1.2em;
+}
+.gg-placeholder { font-size: 2.4rem; opacity: .2; }
+
+.gg-w-side { display: flex; flex-direction: column; gap: 0.65rem; }
+.gg-pull-btn {
+  width: 100%; padding: 0.7rem; background: var(--gold); color: #fff8e8;
+  border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; font-family: var(--sans); transition: opacity .15s, transform .15s;
+}
+.gg-pull-btn:hover:not(:disabled) { opacity: .85; transform: translateY(-1px); }
+.gg-pull-btn:disabled { opacity: .35; cursor: default; transform: none; }
+.gg-stats {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 9px;
+  padding: 0.7rem 0.9rem; font-size: 0.8rem; color: var(--muted); line-height: 1.9;
+}
+.gg-stats strong { color: var(--ink2); }
+.gg-progress-bar {
+  height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 3px;
+}
+.gg-progress-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width .4s ease; }
+.gg-passive-note { font-size: 0.72rem; color: var(--muted); opacity: .7; margin: 0; }
+.gg-clear-btn {
+  background: none; border: 1px solid var(--border); border-radius: 6px;
+  padding: 0.25rem 0.65rem; font-size: 0.72rem; color: var(--muted);
+  cursor: pointer; font-family: var(--sans); transition: color .15s, border-color .15s;
+}
+.gg-clear-btn:hover { color: #dc2626; border-color: #dc2626; }
+
+.gg-footer {
+  border-top: 1px solid var(--border); padding: 0.85rem 1.1rem;
+  background: var(--cream); border-radius: 0 0 18px 18px; text-align: center;
+}
+.gg-footer p {
+  margin: 0 0 0.3rem; font-size: 0.8rem; color: var(--ink2); line-height: 1.55;
+}
+.gg-footer p:last-child { margin-bottom: 0; }
+.gg-footer-small {
+  font-size: 0.69rem !important; color: var(--muted) !important; opacity: .75;
+}
+.gg-footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
+.gg-footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -419,6 +544,7 @@ footer {
   <span class="nav-brand"><img src="zabanwalk.gif" alt="" />咋办Bot</span>
   <ul>
     <li><a href="#features">功能</a></li>
+    <li><a href="#" onclick="ggToggle(); return false;">扭蛋</a></li>
     <li><a href="#commands">指令</a></li>
     <li><a href="#legal">法律</a></li>
   </ul>
@@ -492,6 +618,44 @@ footer {
     </div>
   </div>
 </section>
+
+<!-- mi-chan 扭蛋浮窗 -->
+<button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha">🎰</button>
+<div class="gg-widget" id="gg-widget">
+  <div class="gg-w-header">
+    <span class="gg-w-title">🎰 mi-chan gacha</span>
+    <div class="gg-gold-count" id="gg-gold">💰 0 Gold</div>
+    <button class="gg-w-close" onclick="ggToggle()">✕</button>
+  </div>
+  <div class="gg-w-body">
+    <div class="gg-w-actions">
+      <button class="gg-click-btn" onclick="ggClick()">👆 +<span id="gg-gpc">1</span>G</button>
+      <button class="gg-upgrade-btn" id="gg-upg-btn" onclick="ggBuyUpgrade()">⬆️ 升级 Lv.<span id="gg-level">1</span>（<span id="gg-upg-cost">10</span>G）</button>
+    </div>
+    <div class="gg-w-center">
+      <div class="gg-img-panel">
+        <span class="gg-placeholder" id="gg-placeholder">🎴</span>
+        <img id="gg-img" alt="mi-chan" />
+        <div class="gg-log" id="gg-log"></div>
+      </div>
+      <div class="gg-w-side">
+        <button class="gg-pull-btn" onclick="ggPull()">🎰 扭一次（100G）</button>
+        <div class="gg-stats">
+          <div><strong id="gg-col-text">图鉴：0 / 41</strong></div>
+          <div class="gg-progress-bar"><div class="gg-progress-fill" id="gg-progress" style="width:0%"></div></div>
+          <div style="margin-top:.25rem">已抽：<strong id="gg-pulls">0</strong> 次</div>
+          <div>消耗：<strong id="gg-spent">0</strong>G</div>
+        </div>
+        <p class="gg-passive-note">☕ 每 2 秒 +<span id="gg-passive">1</span>G</p>
+        <button class="gg-clear-btn" onclick="ggClearSave()">🗑️ 清除存档</button>
+      </div>
+    </div>
+  </div>
+  <div class="gg-footer">
+    <p>喜欢扭蛋机吗？请也来试试看 <a href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">咋办 Bot</a> 的扭蛋机哦！</p>
+    <p class="gg-footer-small">其实扭蛋机的雏形是几年前作者手搓的一个小网站捏：<br><a href="https://sanjuroku.github.io/UwU/" target="_blank" rel="noopener">sanjuroku.github.io/UwU/</a>（怀念）</p>
+  </div>
+</div>
 
 <!-- 指令速查 -->
 <div class="cmd-section" id="commands">
@@ -588,6 +752,137 @@ footer {
     </div>
   </div>
 </footer>
+
+<script>
+// ── Mi-chan 扭蛋浮窗 ──────────────────────────────────────────────────────────
+const GG_BASE = "https://raw.githubusercontent.com/sanjuroku/UwU/main/img/";
+const GG_PEPE = ["43", "44"];
+
+// Pool: 00-38 (mi-chan) + 43, 44 (pepe)；已移除 39-42 (nekoChan)
+const GG_POOL = [
+  ...Array.from({length: 39}, (_, i) => i < 10 ? "0" + i : String(i)),
+  "43", "44"
+];
+const GG_TOTAL     = GG_POOL.length; // 41
+const GG_PULL_COST = 100;
+
+let ggData = { gold: 0, pulls: 0, spent: 0, goldPerClick: 1, goldPerClickCost: 10 };
+let ggCol  = [];
+
+function ggToggle() {
+  document.getElementById("gg-widget").classList.toggle("open");
+}
+
+function ggLoad() {
+  const d = JSON.parse(localStorage.getItem("gg_save") || "null");
+  const c = JSON.parse(localStorage.getItem("gg_col")  || "null");
+  if (d) ggData = Object.assign({ goldPerClick: 1, goldPerClickCost: 10 }, d);
+  if (c) ggCol  = c;
+  ggRefresh();
+}
+
+function ggSave() {
+  localStorage.setItem("gg_save", JSON.stringify(ggData));
+  localStorage.setItem("gg_col",  JSON.stringify(ggCol));
+}
+
+function ggRefresh() {
+  const gpc  = ggData.goldPerClick;
+  const cost = ggData.goldPerClickCost;
+  document.getElementById("gg-gold").textContent     = "💰 " + ggData.gold + " Gold";
+  document.getElementById("gg-col-text").textContent = "图鉴：" + ggCol.length + " / " + GG_TOTAL;
+  document.getElementById("gg-pulls").textContent    = ggData.pulls || 0;
+  document.getElementById("gg-spent").textContent    = ggData.spent || 0;
+  document.getElementById("gg-progress").style.width = Math.round(ggCol.length / GG_TOTAL * 100) + "%";
+  document.getElementById("gg-gpc").textContent      = gpc;
+  document.getElementById("gg-level").textContent    = gpc;
+  document.getElementById("gg-upg-cost").textContent = cost;
+  document.getElementById("gg-passive").textContent  = gpc;
+  document.getElementById("gg-upg-btn").disabled     = ggData.gold < cost;
+}
+
+function ggClick() {
+  ggData.gold += ggData.goldPerClick;
+  ggRefresh();
+  ggSave();
+}
+
+function ggBuyUpgrade() {
+  if (ggData.gold < ggData.goldPerClickCost) return;
+  ggData.gold             -= ggData.goldPerClickCost;
+  ggData.goldPerClick     += 1;
+  ggData.goldPerClickCost *= 2;
+  ggRefresh();
+  ggSave();
+}
+
+function ggPull() {
+  const img = document.getElementById("gg-img");
+  const log = document.getElementById("gg-log");
+  const ph  = document.getElementById("gg-placeholder");
+
+  if (ggData.gold < GG_PULL_COST) {
+    img.src = GG_BASE + "feelssadman.png";
+    img.style.display = "block";
+    if (ph) ph.style.display = "none";
+    img.style.animation = "none"; img.offsetHeight;
+    img.style.animation = "gg-fadein 1.5s ease-out forwards";
+    log.textContent = "No gold, no mi-chan :(";
+    return;
+  }
+
+  ggData.gold  -= GG_PULL_COST;
+  ggData.pulls  = (ggData.pulls || 0) + 1;
+  ggData.spent  = (ggData.spent || 0) + GG_PULL_COST;
+
+  const s = GG_POOL[Math.floor(Math.random() * GG_POOL.length)];
+  let src, text;
+
+  if (GG_PEPE.includes(s)) {
+    text = "!!! \\pepecat_" + s + " GET DAZE/ !!!";
+    src  = GG_BASE + "mi" + s + (s === "44" ? ".png" : ".jpg");
+  } else if (s === "38") {
+    text = "!!! \\confused_cat GET DAZE/ !!!";
+    src  = GG_BASE + "mi" + s + ".jpg";
+  } else {
+    text = "!!! \\michan_" + s + " GET DAZE/ !!!";
+    src  = GG_BASE + "mi" + s + ".jpg";
+  }
+
+  img.style.display = "none";
+  setTimeout(() => {
+    img.src = src;
+    img.style.display = "block";
+    if (ph) ph.style.display = "none";
+    img.style.animation = "none"; img.offsetHeight;
+    img.style.animation = "gg-fadein 1.5s ease-out forwards";
+  }, 80);
+
+  log.textContent = text;
+  if (!ggCol.includes(s)) ggCol.push(s);
+  ggRefresh();
+  ggSave();
+}
+
+function ggClearSave() {
+  if (!confirm("确定清除存档？Gold、升级和图鉴记录都会消失。")) return;
+  localStorage.removeItem("gg_save");
+  localStorage.removeItem("gg_col");
+  ggData = { gold: 0, pulls: 0, spent: 0, goldPerClick: 1, goldPerClickCost: 10 };
+  ggCol  = [];
+  const img = document.getElementById("gg-img");
+  const ph  = document.getElementById("gg-placeholder");
+  img.style.display = "none"; img.src = "";
+  if (ph) ph.style.display = "";
+  document.getElementById("gg-log").textContent = "";
+  ggRefresh();
+}
+
+// 被动收入：每 2 秒 +goldPerClick Gold
+setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }, 2000);
+
+ggLoad();
+</script>
 
 </body>
 </html>
