@@ -57,10 +57,12 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-brand {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  color: var(--ink2);
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: var(--sans); font-size: 1rem; font-weight: 700;
+  color: var(--ink2); text-decoration: none;
 }
+.nav-brand:hover { text-decoration: none; }
+.nav-brand img { height: 28px; width: auto; }
 nav ul {
   list-style: none;
   display: flex;
@@ -195,7 +197,7 @@ footer a:hover { color: var(--gold-light); }
 <body>
 
 <nav>
-  <span class="nav-brand">✨ 咋办 Bot</span>
+  <a class="nav-brand" href="https://sanjuroku.github.io/zabanbot/"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
   <ul>
     <li><a href="index.html">← Home</a></li>
     <li><a href="privacy.html">Privacy</a></li>

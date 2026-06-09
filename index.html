@@ -70,7 +70,9 @@ nav {
   font-weight: 700;
   font-size: 1rem;
   color: var(--ink2);
+  text-decoration: none;
 }
+.nav-brand:hover { text-decoration: none; }
 .nav-brand img {
   height: 28px;
   width: auto;
@@ -416,7 +418,7 @@ footer {
 .gg-fab {
   position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
   width: 52px; height: 52px; border-radius: 50%;
-  background: var(--gold); color: #fff8e8; font-size: 1.4rem;
+  background: #ffc91e; color: #fff8e8; font-size: 1.4rem;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; user-select: none; border: none;
   box-shadow: 0 4px 16px rgba(0,0,0,.22);
@@ -541,7 +543,7 @@ footer {
 <body>
 
 <nav>
-  <span class="nav-brand"><img src="zabanwalk.gif" alt="" />咋办Bot</span>
+  <a class="nav-brand" href="https://sanjuroku.github.io/zabanbot/"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
   <ul>
     <li><a href="#features">功能</a></li>
     <li><a href="#" onclick="ggToggle(); return false;">扭蛋</a></li>
@@ -574,7 +576,7 @@ footer {
       </div>
     </div>
     <div class="hero-right">
-      <img src="zabanwalk.gif" alt="咋办 Bot" />
+      <img src="zabanwalk.gif" alt="咋办 Bot" onclick="ggToggle()" style="cursor:pointer" title="点击试试扭蛋机！" />
     </div>
   </div>
 </div>
