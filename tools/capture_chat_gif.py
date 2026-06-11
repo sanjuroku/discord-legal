@@ -1,5 +1,5 @@
 # 抓取主页 hero 对话卡片，导出三语透明底 GIF（逐帧显式设置状态，25fps）
-# 用法：python tools/capture_chat_gif.py  （需 http://localhost:8800 在跑）
+# 用法：python tools/capture_chat_gif.py [lang ...]  （需 http://localhost:8800 在跑；不带参数则四语全抓）
 #
 # 不依赖浏览器时钟：每一帧的打字进度 / 消息淡入 / 光标亮灭 / 走路帧
 # 都按时间 t 由脚本直接写进 DOM，节奏与网站 JS 时间线严格一致。
@@ -13,7 +13,7 @@ URL = "http://localhost:8800"
 OUT = Path(__file__).resolve().parent.parent / "screenshots"
 LOOP_MS = 6900          # 网站动画周期
 FRAME_MS = 40           # 25fps
-LANGS = ["zh", "en", "ja"]
+LANGS = ["zh", "tw", "en", "ja"]
 
 def quantize_frame(img: Image.Image) -> Image.Image:
     """RGBA -> 带 1bit 透明的调色板帧"""
@@ -52,7 +52,7 @@ SET_STATE_JS = """
   // 打字与占位符：2100 打「咋」，2450 打「咋办」，3150 发送清空
   let txt = '', phVis = true;
   if (t >= 2100 && t < 2450) { txt = '咋'; phVis = false; }
-  else if (t >= 2450 && t < 3150) { txt = '咋办'; phVis = false; }
+  else if (t >= 2450 && t < 3150) { txt = 'TYPED_WORD'; phVis = false; }
   typed.textContent = txt;
   ph.style.display = phVis ? '' : 'none';
   // 消息淡入：250ms，opacity 0->1 / translateY 4px->0
@@ -99,9 +99,15 @@ def capture_lang(browser, lang: str, sprite):
     """)
     page.evaluate("document.fonts.ready")
     page.evaluate(f"applyLang('{lang}')")
+    if lang == "tw":
+        # 等 opencc-js 从 CDN 加载并完成整页繁体转换（聊天卡昵称变为「咋辦媽」）
+        page.wait_for_function(
+            "document.querySelector('#chat-name-mom-label').textContent.includes('辦')",
+            timeout=30000)
     set_state = SET_STATE_JS.replace("WALK_FRAME_MS", str(frame_ms)) \
                             .replace("WALK_N", str(n)) \
-                            .replace("WALK_FW", f"{fw:.4f}")
+                            .replace("WALK_FW", f"{fw:.4f}") \
+                            .replace("TYPED_WORD", "咋辦" if lang == "tw" else "咋办")
     card = page.locator(".hero-chat")
     card.screenshot(omit_background=True)  # 预热渲染管线
 
@@ -120,11 +126,13 @@ def capture_lang(browser, lang: str, sprite):
     page.close()
 
 def main():
+    import sys
+    langs = [l for l in sys.argv[1:] if l in LANGS] or LANGS
     OUT.mkdir(exist_ok=True)
     sprite = walk_sprite()
     with sync_playwright() as pw:
         browser = pw.chromium.launch(channel="msedge", headless=True)
-        for lang in LANGS:
+        for lang in langs:
             capture_lang(browser, lang, sprite)
         browser.close()
 
