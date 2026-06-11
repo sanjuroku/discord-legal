@@ -100,14 +100,15 @@ def capture_lang(browser, lang: str, sprite):
     page.evaluate("document.fonts.ready")
     page.evaluate(f"applyLang('{lang}')")
     if lang == "tw":
-        # 等 opencc-js 从 CDN 加载并完成整页繁体转换（聊天卡昵称变为「咋辦媽」）
+        # 等 opencc-js 从 CDN 加载并完成整页繁体转换。
+        # 品牌「咋办」受保护不转换，以「妈→媽」作为转换完成的判定
         page.wait_for_function(
-            "document.querySelector('#chat-name-mom-label').textContent.includes('辦')",
+            "document.querySelector('#chat-name-mom-label').textContent.includes('媽')",
             timeout=30000)
     set_state = SET_STATE_JS.replace("WALK_FRAME_MS", str(frame_ms)) \
                             .replace("WALK_N", str(n)) \
                             .replace("WALK_FW", f"{fw:.4f}") \
-                            .replace("TYPED_WORD", "咋辦" if lang == "tw" else "咋办")
+                            .replace("TYPED_WORD", "咋办")  # 触发词全语言保持简体
     card = page.locator(".hero-chat")
     card.screenshot(omit_background=True)  # 预热渲染管线
 

@@ -1092,7 +1092,7 @@ setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }
     typed.textContent = "";
     ph.style.display = "";
     at(2100, () => { ph.style.display = "none"; typed.textContent = "咋"; });   // 光标先空闪约两个周期
-    at(2450, () => { typed.textContent = currentLang === "tw" ? "咋辦" : "咋办"; });
+    at(2450, () => { typed.textContent = "咋办"; });  // 触发词全语言保持简体
     at(3150, () => { typed.textContent = ""; ph.style.display = ""; mom.classList.add("show"); }); // 发送
     at(3900, () => { bot.classList.add("show"); });
     at(6900, play); // 停留约 3 秒后重播
@@ -1275,14 +1275,15 @@ const I18N_CMDS = {
 
 const PAGE_TITLES = {
   zh: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
-  tw: "咋辦Bot /ᐠ｡ꞈ｡ᐟ\\",
+  tw: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
   en: "咋办Bot (Zaban Bot) /ᐠ｡ꞈ｡ᐟ\\",
   ja: "咋办Bot（ザバンにゃんBot）/ᐠ｡ꞈ｡ᐟ\\"
 };
 
 // ── 繁体中文：简体原文 + OpenCC（opencc-js，懒加载 CDN）整页文本节点转换 ──────
-// 「咋办」是品牌名，转换时整体保护，统一显示为「咋辦」。转换前记录原文，切走时先还原，
-// 避免字典没覆盖的静态中文留下繁体残影。
+// 「咋办」是品牌名兼触发词，转换时整体保护、所有语言（含繁体）保持简体「咋办」原样
+// ——只有「咋办」能触发命令，繁体用户照着页面输入「咋辦」会触发失败。
+// 转换前记录原文，切走时先还原，避免字典没覆盖的静态中文留下繁体残影。
 let _twConv = null;        // (s) => 繁体
 let _twLoading = null;     // Promise
 const _twTouched = [];     // [textNode, 原文]
@@ -1300,7 +1301,7 @@ function _loadTwConverter() {
     s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
     s.onload = () => {
       const c = OpenCC.Converter({ from: "cn", to: "twp" });
-      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋辦");
+      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办");
       // 扭蛋小组件的动态文案：基于 zh 包一层转换
       GG_LBL.tw = {};
       for (const [k, v] of Object.entries(GG_LBL.zh)) {
