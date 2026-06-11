@@ -219,7 +219,7 @@ footer a:hover { color: var(--gold-light); }
     <div class="page-eyebrow">Legal</div>
     <h1>Privacy Policy</h1>
     <p class="sub">This Privacy Policy describes how Echo's Bot (also referred to as "咋办Bot") collects, uses, and protects your information when you interact with the bot on Discord.</p>
-    <p class="sub" style="margin-top:0.5rem;">Last updated: June 11, 2026</p>
+    <p class="sub" style="margin-top:0.5rem;">Last updated: June 12, 2026</p>
   </div>
 </div>
 
@@ -231,6 +231,7 @@ footer a:hover { color: var(--gold-light); }
     <li>Your Discord user ID and username</li>
     <li>Your input (e.g., prompts, command options, or images attached to <code>/ask</code>) and the corresponding GPT responses</li>
     <li>Custom AI role settings set via <code>/setrole</code></li>
+    <li>Language preference set via <code>/language</code> (Simplified Chinese / Traditional Chinese / English / Japanese)</li>
     <li>Profile card data provided via <code>/mycard</code>, including nickname, pronouns, bio, location/timezone, and linked game accounts (Steam, Nintendo, PlayStation)</li>
     <li>Trivia quiz statistics (correct and incorrect answer counts)</li>
     <li>Daily fortune check-in data, including consecutive check-in streaks and personal records</li>
@@ -243,6 +244,7 @@ footer a:hover { color: var(--gold-light); }
   <p>Collected data is stored as follows:</p>
   <ul>
     <li>Conversation histories, summaries, role settings, and profile card data are stored persistently until deleted by the user or developer.</li>
+    <li>Your language preference is stored persistently until you change it via <code>/language</code> or request deletion.</li>
     <li>Trivia statistics are stored persistently until reset by the user.</li>
     <li>Daily fortune check-in data (streak counts, personal records) and gacha data (Zacoin balances, fragment counts, collected items, pity counters) are stored persistently until deleted upon user request.</li>
     <li>Temporary query cache (e.g., Reddit post cache, NeoDB query cache, cold-knowledge content cache from Reddit / Wikipedia / Futility Closet) may be stored server-side for up to 24 hours to improve response performance. This cache is non-personal and not linked to individual user identities.</li>
@@ -285,6 +287,7 @@ footer a:hover { color: var(--gold-light); }
   <ul>
     <li><strong>Conversation history, summaries, and role settings:</strong> Use the <code>/reset</code> command at any time.</li>
     <li><strong>Trivia statistics:</strong> Use the <code>/resettrivia</code> command at any time.</li>
+    <li><strong>Language preference:</strong> You can change it at any time with the <code>/language</code> command. It is not cleared by <code>/reset</code>; to have it deleted, contact the developer directly (see Section 8).</li>
     <li><strong>Profile card data, fortune check-in records, Zacoin balances, and gacha data:</strong> Contact the developer directly (see Section 8) to request deletion. These cannot currently be deleted via bot command.</li>
     <li><strong>Activity logs:</strong> Logs are automatically pruned according to the retention schedule described in Section 2. Individual log entries cannot be deleted on request.</li>
   </ul>

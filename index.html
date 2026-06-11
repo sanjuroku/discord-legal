@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>咋办Bot /ᐠ｡ꞈ｡ᐟ\</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>" />
-<meta name="description" content="咋办 Bot：AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡，把快乐带进你的 Discord 服务器！" />
+<meta name="description" content="咋办 Bot：AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡，多语言支持（简中 / 繁中 / English / 日本語），把快乐带进你的 Discord 服务器！" />
 <meta property="og:type"        content="website" />
 <meta property="og:url"         content="https://sanjuroku.github.io/zabanbot/" />
 <meta property="og:title"       content="咋办Bot /ᐠ｡ꞈ｡ᐟ\" />
-<meta property="og:description" content="AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡，把快乐带进你的 Discord 服务器！" />
+<meta property="og:description" content="AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡，多语言支持（简中 / 繁中 / English / 日本語），把快乐带进你的 Discord 服务器！" />
 <meta property="og:image"       content="https://sanjuroku.github.io/zabanbot/zabanwalk.gif" />
 <meta name="twitter:card"       content="summary_large_image" />
 <meta name="twitter:image"      content="https://sanjuroku.github.io/zabanbot/zabanwalk.gif" />
@@ -139,7 +139,6 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   align-items: end;
   gap: 3rem;
 }
-.hero-left {}
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -178,15 +177,27 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   .hero h1 em { white-space: normal; } /* 超小屏放开换行，避免溢出 */
 }
 .hero-tagline {
-  /* 与 h1 副标题同策略：自适应字号 + 禁止换行，超小屏放开 */
-  font-size: clamp(0.78rem, 1.5vw, 1rem);
+  /* 现为吐槽行下方的次要小字 */
+  font-size: clamp(0.7rem, 1.3vw, 0.85rem);
   color: var(--muted);
+  opacity: 0.75;
   line-height: 1.7;
   margin-bottom: 2rem;
   white-space: nowrap;
 }
-/* EN/日 文案更长，字号上限略低、缩放更快 */
-html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.62rem, 1.37vw, 0.95rem); }
+/* Top.gg 同款一句话吐槽：h1 下方第一行，沿用原 tagline 的字号策略 */
+.hero-quip {
+  font-size: clamp(0.78rem, 1.5vw, 1rem);
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+  white-space: nowrap;
+}
+@media (max-width: 380px) {
+  .hero-quip { white-space: normal; }
+}
+/* EN/日 文案更长，字号上限略低、缩放更快；tagline 再低一档保持「吐槽行 > tagline」层级 */
+html:not([lang^="zh"]) .hero-quip { font-size: clamp(0.62rem, 1.37vw, 0.95rem); }
+html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem); }
 @media (max-width: 380px) {
   .hero-tagline { white-space: normal; }
 }
@@ -715,6 +726,7 @@ footer {
     <div class="hero-left">
       <div class="hero-eyebrow">✨ Discord Bot</div>
       <h1>咋办Bot<em>把快乐带进你的 Discord 服务器</em></h1>
+      <p class="hero-quip">咋办! Zaban! ザバンにゃん! —— 关注我，每天也学不到什么知识</p>
       <p class="hero-tagline">
       AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡 /ᐠ｡ꞈ｡ᐟ\
       </p>
@@ -725,6 +737,7 @@ footer {
         <span class="pill">🎬 书影音游</span>
         <span class="pill">🐾 可爱 &amp; 艺术</span>
         <span class="pill">🛠️ 实用工具</span>
+        <span class="pill">🌐 多语言支持</span>
       </div>
       <div class="hero-btns">
         <a class="btn-primary" href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">➕ 邀请咋办</a>
@@ -766,7 +779,7 @@ footer {
       <div class="card">
         <span class="card-icon">💬</span>
         <h3>AI 对话</h3>
-        <p>基于 GPT-4.1，支持多轮对话、图片分析、翻译。说「咋办」自动触发，个性角色可自定义。</p>
+        <p>基于 GPT-4.1，支持多轮对话、图片分析、翻译。说「咋办」自动触发，个性角色可自定义，多语言回复（简中 / 繁中 / 英 / 日）。</p>
       </div>
       <div class="card">
         <span class="card-icon">🔮</span>
@@ -889,6 +902,7 @@ footer {
         <tr class="group-header"><td colspan="2">👤 个人设置</td></tr>
         <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡（可以用来自我介绍哦！）</td></tr>
         <tr><td><code>/mycard</code></td><td>同上，只是更简洁的命令名字！</td></tr>
+        <tr><td><code>/language</code></td><td>切换咋办的回复语言（简中 / 繁中 / English / 日本語）</td></tr>
         <tr><td><code>/trigger</code></td><td>开关关键词「咋办」自动触发 AI 回复</td></tr>
         <tr><td><code>/reset</code></td><td>清空个人全部数据（对话历史 / 设定 / 统计）</td></tr>
         <tr class="group-header"><td colspan="2">📌 其他</td></tr>
@@ -1156,12 +1170,17 @@ const I18N_SEL = {
     en: "AI chat, tarot, daily fortunes, media search &amp; gacha /ᐠ｡ꞈ｡ᐟ\\",
     ja: "AIチャット・タロット・今日の運勢・メディア検索・ガチャ /ᐠ｡ꞈ｡ᐟ\\"
   },
+  ".hero-quip": {
+    en: "咋办! Zaban! ザバンにゃん! — Follow me and learn nothing new every day",
+    ja: "咋办! Zaban! ザバンにゃん! —— フォローしても何も学べないにゃん"
+  },
   ".hero-pills .pill:nth-child(1)": { en: "💬 AI Chat", ja: "💬 AI チャット" },
   ".hero-pills .pill:nth-child(2)": { en: "🔮 Tarot", ja: "🔮 タロット占い" },
   ".hero-pills .pill:nth-child(3)": { en: "🎰 Gacha", ja: "🎰 ガチャ" },
   ".hero-pills .pill:nth-child(4)": { en: "🎬 Media Search", ja: "🎬 メディア検索" },
   ".hero-pills .pill:nth-child(5)": { en: "🐾 Cute &amp; Art", ja: "🐾 かわいい＆アート" },
   ".hero-pills .pill:nth-child(6)": { en: "🛠️ Utilities", ja: "🛠️ 便利ツール" },
+  ".hero-pills .pill:nth-child(7)": { en: "🌐 Multilingual", ja: "🌐 多言語対応" },
   ".hero-btns a:nth-child(1)": { en: "➕ Invite 咋办", ja: "➕ 咋办を招待" },
   ".hero-btns a:nth-child(2)": { en: "⭐ Vote on Top.gg", ja: "⭐ Top.gg で投票" },
   "#chat-name-mom-label": { en: "Zaban's Mom", ja: "ザバンにゃんのかあちゃん" },
@@ -1169,8 +1188,8 @@ const I18N_SEL = {
   "#features .section-title": { en: "What can it do?", ja: "何ができるの？" },
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
-    en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable.",
-    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけでトリガー、AI のキャラ設定もカスタマイズ可能。"
+    en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable, with multilingual replies (Simplified / Traditional Chinese, English, Japanese).",
+    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけでトリガー、AI のキャラ設定もカスタマイズ可能。返答は多言語対応（簡体 / 繁体中国語・英語・日本語）。"
   },
   ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
   ".cards .card:nth-child(2) p": {
@@ -1266,6 +1285,7 @@ const I18N_CMDS = {
   "/poll":         { en: "Create a native Discord poll", ja: "Discord ネイティブ投票を作成" },
   "/hellohowareyou": { en: "Fill out your profile card (great for introductions!)", ja: "プロフィールカードを作成（自己紹介にどうぞ！）" },
   "/mycard":       { en: "Same as above, just a shorter command name!", ja: "同上、短いコマンド名バージョン！" },
+  "/language":     { en: "Switch Zaban's reply language (简中 / 繁中 / English / 日本語)", ja: "ザバンにゃんの返答言語を切り替え（简中 / 繁中 / English / 日本語）" },
   "/trigger":      { en: "Toggle the \"咋办\" keyword auto-response", ja: "「咋办」キーワード自動応答のオン / オフ" },
   "/reset":        { en: "Clear all your personal data (history / settings / stats)", ja: "個人データを全消去（履歴 / 設定 / 統計）" },
   "/menu":         { en: "Graphical button-based command launcher", ja: "ボタン式コマンドランチャー" },
