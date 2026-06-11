@@ -169,14 +169,25 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   font-weight: 900;
   color: var(--ink2);
   display: block;
-  font-size: 0.75em;
+  /* 独立于 h1 的字号并禁止换行：右侧对话卡片挤压后副标题必须保持单行 */
+  font-size: clamp(1.4rem, 3.2vw, 3.1rem);
+  white-space: nowrap;
+}
+@media (max-width: 380px) {
+  .hero h1 em { white-space: normal; } /* 超小屏放开换行，避免溢出 */
 }
 .hero-tagline {
-  font-size: 1rem;
+  /* 与 h1 副标题同策略：自适应字号 + 禁止换行，超小屏放开 */
+  font-size: clamp(0.78rem, 1.5vw, 1rem);
   color: var(--muted);
-  max-width: 480px;
   line-height: 1.7;
   margin-bottom: 2rem;
+  white-space: nowrap;
+}
+/* EN/日 文案更长，字号上限略低、缩放更快 */
+html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.62rem, 1.37vw, 0.95rem); }
+@media (max-width: 380px) {
+  .hero-tagline { white-space: normal; }
 }
 .hero-pills {
   display: flex;
@@ -230,10 +241,109 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   text-align: center;
   padding-bottom: 0.5rem;
 }
-.hero-right img {
+.hero-right > img {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+
+/* ─── HERO CHAT（对话实录卡片）─── */
+.hero-chat {
+  margin-top: 1.2rem;
+  background: var(--ink2);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem 0.7rem;
+  text-align: left;
+  width: 300px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.chat-msg {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+.chat-msg.show { opacity: 1; transform: none; }
+.chat-msg + .chat-msg { margin-top: 0.7rem; }
+.chat-avatar {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gold-pale);
+  color: var(--ink2);
+  font-size: 0.6rem;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-avatar-bot { background: transparent; }
+.chat-name {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #fec81e;
+  line-height: 1.3;
+}
+.chat-name-mom { color: var(--cream); }
+.chat-name .chat-time {
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.3);
+  margin-left: 0.3rem;
+}
+.chat-name .chat-app {
+  font-size: 0.56rem;
+  background: #5865f2;
+  color: #fff;
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  margin-left: 0.25rem;
+  vertical-align: 1px;
+}
+.chat-text {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.4;
+}
+/* 对话卡片的 Discord 风输入框 + 打字动画 */
+.chat-input {
+  margin-top: 0.8rem;
+  background: #3a3d44;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.88);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* EN/日 占位文案更长，略缩字号保证单行；万一仍超出则省略号兜底 */
+html:not([lang^="zh"]) .chat-input { font-size: 0.72rem; }
+/* 日文最长且各浏览器字体度量不一，再缩一档留余量 */
+html[lang="ja"] .chat-input { font-size: 0.67rem; }
+.chat-placeholder { overflow: hidden; text-overflow: ellipsis; }
+.chat-input-plus {
+  color: rgba(255,255,255,0.4);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.chat-placeholder { color: rgba(255,255,255,0.25); }
+.chat-caret {
+  width: 1.5px;
+  height: 1.05em;
+  background: rgba(255,255,255,0.85);
+  display: inline-block;
+  flex-shrink: 0;
+  animation: caret-blink 1.06s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 /* ─── SECTION SHELL ─── */
@@ -425,13 +535,22 @@ footer {
 .footer-text a:hover { color: var(--gold-light); }
 
 /* ─── RESPONSIVE ─── */
+/* 721–960px：卡片扩到 300px 后两栏放不下（日文 h1 副标题最宽），提前转单栏；GIF 保留居中 */
+@media (max-width: 960px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-right { padding-bottom: 0; margin-top: 1.5rem; }
+  .hero-chat { margin: 1.2rem auto 0; }
+}
 @media (max-width: 720px) {
   nav ul { display: none; }
   nav { padding: 0 1.25rem; }
   .lang-switch { margin-left: auto; }
   .hero { padding: 3rem 1.25rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; }
-  .hero-right { display: none; }
+  /* 移动端隐藏大 GIF，但保留对话实录卡片（居中展示） */
+  .hero-right { padding-bottom: 0; }
+  .hero-right > img { display: none; }
+  .hero-chat { margin: 0 auto; }
   .section-wrap { padding: 3rem 1.25rem; }
   .cards { grid-template-columns: 1fr; }
   .cmd-wrap { padding: 3rem 1.25rem; }
@@ -613,6 +732,25 @@ footer {
     </div>
     <div class="hero-right">
       <img src="zabanwalk.gif" alt="咋办 Bot" onclick="ggToggle()" style="cursor:pointer" title="点击试试扭蛋机！" />
+      <div class="hero-chat">
+        <div class="chat-msg" id="chat-msg-mom">
+          <span class="chat-avatar"><img src="zabanma.png" alt="咋办妈" /></span>
+          <div>
+            <div class="chat-name chat-name-mom"><span id="chat-name-mom-label">咋办妈</span> <span class="chat-time">10:21</span></div>
+            <div class="chat-text">咋办</div>
+          </div>
+        </div>
+        <div class="chat-msg" id="chat-msg-bot">
+          <span class="chat-avatar chat-avatar-bot"><img src="zabanwalk.gif" alt="咋办" /></span>
+          <div>
+            <div class="chat-name">咋办 <span class="chat-app">✓ APP</span> <span class="chat-time">10:21</span></div>
+            <div class="chat-text">咋办</div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <span class="chat-input-plus">＋</span><span id="chat-typed"></span><span class="chat-caret" id="chat-caret"></span><span class="chat-placeholder" id="chat-placeholder">给 #咋办妈的窝 发消息</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -927,6 +1065,39 @@ function ggClearSave() {
 // 被动收入：每 2 秒 +goldPerClick Gold
 setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }, 2000);
 
+// ── Hero 对话实录动画 ─────────────────────────────────────────────────────────
+// 时间线：光标空闪两下 → 输入框打出「咋办」→ 发送（咋办妈消息浮现）→ 咋办回复浮现 → 停留后循环
+(function chatAnim() {
+  const mom   = document.getElementById("chat-msg-mom");
+  const bot   = document.getElementById("chat-msg-bot");
+  const typed = document.getElementById("chat-typed");
+  const caret = document.getElementById("chat-caret");
+  const ph    = document.getElementById("chat-placeholder");
+  if (!mom || !bot || !typed) return;
+
+  // 无障碍：用户偏好减少动效时，直接呈现最终静态画面
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    mom.classList.add("show");
+    bot.classList.add("show");
+    caret.style.display = "none";
+    return;
+  }
+
+  const at = (ms, fn) => setTimeout(fn, ms);
+  function play() {
+    mom.classList.remove("show");
+    bot.classList.remove("show");
+    typed.textContent = "";
+    ph.style.display = "";
+    at(2100, () => { ph.style.display = "none"; typed.textContent = "咋"; });   // 光标先空闪约两个周期
+    at(2450, () => { typed.textContent = "咋办"; });
+    at(3150, () => { typed.textContent = ""; ph.style.display = ""; mom.classList.add("show"); }); // 发送
+    at(3900, () => { bot.classList.add("show"); });
+    at(6900, play); // 停留约 3 秒后重播
+  }
+  play();
+})();
+
 // ── 多语言 i18n ──────────────────────────────────────────────────────────────
 // 原则：中文为页面原文（DOM 即字典），首次切换时把原文存入 data-zh，切回中文时还原。
 // 指令表不加任何标记，按 <code> 里的命令名匹配 I18N_CMDS，新增命令行不翻译也不会报错。
@@ -980,8 +1151,8 @@ const I18N_SEL = {
     ja: "咋办Bot<em>あなたの Discord サーバーに楽しさを</em>"
   },
   ".hero-tagline": {
-    en: "AI chat, tarot readings, daily fortunes, media search, and gacha pulls /ᐠ｡ꞈ｡ᐟ\\",
-    ja: "AI チャット、タロット占い、今日の運勢、本・映画・音楽・ゲーム検索、ガチャ /ᐠ｡ꞈ｡ᐟ\\"
+    en: "AI chat, tarot, daily fortunes, media search &amp; gacha /ᐠ｡ꞈ｡ᐟ\\",
+    ja: "AIチャット・タロット・今日の運勢・メディア検索・ガチャ /ᐠ｡ꞈ｡ᐟ\\"
   },
   ".hero-pills .pill:nth-child(1)": { en: "💬 AI Chat", ja: "💬 AI チャット" },
   ".hero-pills .pill:nth-child(2)": { en: "🔮 Tarot", ja: "🔮 タロット占い" },
@@ -991,6 +1162,8 @@ const I18N_SEL = {
   ".hero-pills .pill:nth-child(6)": { en: "🛠️ Utilities", ja: "🛠️ 便利ツール" },
   ".hero-btns a:nth-child(1)": { en: "➕ Invite 咋办", ja: "➕ 咋办を招待" },
   ".hero-btns a:nth-child(2)": { en: "⭐ Vote on Top.gg", ja: "⭐ Top.gg で投票" },
+  "#chat-name-mom-label": { en: "Zaban's Mom", ja: "ザバンにゃんのかあちゃん" },
+  "#chat-placeholder": { en: "Message #zaban-moms-nest", ja: "#ザバンにゃんの実家 へメッセージを送信" },
   "#features .section-title": { en: "What can it do?", ja: "何ができるの？" },
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
