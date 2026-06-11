@@ -702,7 +702,8 @@ footer {
     <li><a href="#legal">法律</a></li>
   </ul>
   <div class="lang-switch" id="lang-switch">
-    <button data-lang="zh" class="active">中</button>
+    <button data-lang="zh" class="active">简</button>
+    <button data-lang="tw">繁</button>
     <button data-lang="en">EN</button>
     <button data-lang="ja">日</button>
   </div>
@@ -1169,7 +1170,7 @@ const I18N_SEL = {
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
     en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable.",
-    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけで起動、AI のキャラ設定もカスタマイズ可能。"
+    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけでトリガー、AI のキャラ設定もカスタマイズ可能。"
   },
   ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
   ".cards .card:nth-child(2) p": {
@@ -1232,7 +1233,7 @@ const I18N_GROUPS = {
 
 // 指令描述：按 <code> 命令名匹配
 const I18N_CMDS = {
-  "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\"", ja: "ザバンにゃんに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言っても起動" },
+  "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\"", ja: "ザバンにゃんに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言ってもトリガー" },
   "/choose":       { en: "Can't decide? Let Zaban choose for you; add by:me to reveal fate yourself", ja: "迷ったらザバンにゃんにおまかせ。by:me で自分で運命をめくることも" },
   "/setrole":      { en: "Set a custom persona for Zaban, or things it should remember", ja: "ザバンにゃんのキャラ設定や、覚えてほしいことを設定" },
   "/rolecheck":    { en: "View your persona settings", ja: "現在のキャラ設定を確認" },
@@ -1260,7 +1261,7 @@ const I18N_CMDS = {
   "/triviarank":   { en: "View this server's trivia leaderboard", ja: "サーバーのクイズランキングを表示" },
   "/resettrivia":  { en: "Clear your trivia stats", ja: "自分のクイズ戦績をリセット" },
   "/imageconvert": { en: "Image format conversion (PNG / JPEG / WEBP / BMP)", ja: "画像形式変換（PNG / JPEG / WEBP / BMP）" },
-  "/reading":      { en: "How do I read this?? Pinyin / kana / IPA annotations", ja: "これなんて読む？？ピンイン / ふりがな / IPA の読み注釈" },
+  "/reading":      { en: "How do I read this?? Pinyin / kana / IPA annotations", ja: "これなんて読むの？？qwqピンイン / ふりがな / IPA の読み注釈" },
   "/timezone":     { en: "World clock for 15 cities", ja: "世界15都市の時刻一覧" },
   "/poll":         { en: "Create a native Discord poll", ja: "Discord ネイティブ投票を作成" },
   "/hellohowareyou": { en: "Fill out your profile card (great for introductions!)", ja: "プロフィールカードを作成（自己紹介にどうぞ！）" },
@@ -1274,27 +1275,78 @@ const I18N_CMDS = {
 
 const PAGE_TITLES = {
   zh: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
+  tw: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
   en: "咋办Bot (Zaban Bot) /ᐠ｡ꞈ｡ᐟ\\",
   ja: "咋办Bot（ザバンにゃんBot）/ᐠ｡ꞈ｡ᐟ\\"
 };
 
+// ── 繁体中文：简体原文 + OpenCC（opencc-js，懒加载 CDN）整页文本节点转换 ──────
+// 「咋办」是品牌名，转换时保护不变。转换前记录原文，切走时先还原，
+// 避免字典没覆盖的静态中文留下繁体残影。
+let _twConv = null;        // (s) => 繁体
+let _twLoading = null;     // Promise
+const _twTouched = [];     // [textNode, 原文]
+
+function _twRestore() {
+  for (const [n, o] of _twTouched) n.nodeValue = o;
+  _twTouched.length = 0;
+}
+
+function _loadTwConverter() {
+  if (_twConv) return Promise.resolve(_twConv);
+  if (_twLoading) return _twLoading;
+  _twLoading = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
+    s.onload = () => {
+      const c = OpenCC.Converter({ from: "cn", to: "twp" });
+      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办");
+      // 扭蛋小组件的动态文案：基于 zh 包一层转换
+      GG_LBL.tw = {};
+      for (const [k, v] of Object.entries(GG_LBL.zh)) {
+        GG_LBL.tw[k] = typeof v === "function" ? (...a) => _twConv(v(...a)) : _twConv(v);
+      }
+      resolve(_twConv);
+    };
+    s.onerror = () => { _twLoading = null; reject(new Error("opencc-js load failed")); };
+    document.head.appendChild(s);
+  });
+  return _twLoading;
+}
+
+function _twConvertDom(conv) {
+  _twRestore();
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = walker.nextNode())) {
+    const t = n.nodeValue;
+    if (/[一-鿿]/.test(t)) {
+      const c = conv(t);
+      if (c !== t) { _twTouched.push([n, t]); n.nodeValue = c; }
+    }
+  }
+}
+
 function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem("site_lang", lang);
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : (lang === "tw" ? "zh-TW" : lang);
   document.title = PAGE_TITLES[lang];
+
+  _twRestore();  // 无论切到哪种语言，先还原繁体转换过的文本节点
+  const base = lang === "tw" ? "zh" : lang;  // 繁体以简体内容为底，再整页转换
 
   for (const [sel, tr] of Object.entries(I18N_SEL)) {
     const el = document.querySelector(sel);
     if (!el) continue;
     if (el.dataset.zh === undefined) el.dataset.zh = el.innerHTML;
-    el.innerHTML = lang === "zh" ? el.dataset.zh : (tr[lang] || el.dataset.zh);
+    el.innerHTML = base === "zh" ? el.dataset.zh : (tr[base] || el.dataset.zh);
   }
 
   document.querySelectorAll(".cmd-table tr.group-header td").forEach(td => {
     if (td.dataset.zh === undefined) td.dataset.zh = td.textContent;
     const tr = I18N_GROUPS[td.dataset.zh];
-    td.textContent = lang === "zh" ? td.dataset.zh : (tr && tr[lang]) || td.dataset.zh;
+    td.textContent = base === "zh" ? td.dataset.zh : (tr && tr[base]) || td.dataset.zh;
   });
 
   document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
@@ -1303,13 +1355,19 @@ function applyLang(lang) {
     if (!code || !td) return;
     if (td.dataset.zh === undefined) td.dataset.zh = td.innerHTML;
     const tr = I18N_CMDS[code.textContent.trim()];
-    td.innerHTML = lang === "zh" ? td.dataset.zh : (tr && tr[lang]) || td.dataset.zh;
+    td.innerHTML = base === "zh" ? td.dataset.zh : (tr && tr[base]) || td.dataset.zh;
   });
 
   document.querySelectorAll("#lang-switch button").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
   );
   ggRefresh();
+
+  if (lang === "tw") {
+    _loadTwConverter()
+      .then(conv => { if (currentLang === "tw") { _twConvertDom(conv); ggRefresh(); } })
+      .catch(e => console.warn("繁体转换器加载失败，维持简体显示", e));
+  }
 }
 
 document.querySelectorAll("#lang-switch button").forEach(b =>
@@ -1317,7 +1375,7 @@ document.querySelectorAll("#lang-switch button").forEach(b =>
 );
 
 const savedLang = localStorage.getItem("site_lang");
-if (savedLang === "en" || savedLang === "ja") applyLang(savedLang);
+if (savedLang === "en" || savedLang === "ja" || savedLang === "tw") applyLang(savedLang);
 
 ggLoad();
 </script>
