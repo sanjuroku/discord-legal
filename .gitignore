@@ -1,0 +1,9 @@
+# 本地工具脚本(gif 生成管线),不上云
+tools/
+
+# 本地杂项
+__pycache__/
+.claude/
+.pytest_cache/
+savedata/
+*.bak
